@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     flake-utils.url = "github:numtide/flake-utils";
     steam-fetcher = {
-      url = "github:aidalgol/nix-steam-fetcher";
+      url = "github:nix-community/nix-steam-fetcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -8,7 +8,7 @@
 buildFHSUserEnv {
   name = "unturned-server";
 
-  runScript = "/ServerHelper.sh +LanServer/MyServer";
+  runScript = "/Unturned_Headless.x86_64";
 
   targetPkgs = pkgs: [
     unturned-server-unwrapped
