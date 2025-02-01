@@ -8,6 +8,7 @@
       url = "github:aidalgol/nix-steam-fetcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    steam
   };
 
   outputs = {
