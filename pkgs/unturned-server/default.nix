@@ -32,6 +32,7 @@ stdenv.mkDerivation rec {
     cp -r \
       # list of files at the top level to copy
       Unturned_Headless.x86_64 \
+      Unturned_Headless_Data \
       $out
 
     # You may need to fix permissions on the main executable.
