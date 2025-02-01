@@ -5,7 +5,7 @@
 }:
 stdenv.mkDerivation rec {
   name = "unturned-server";
-  version = "3.24.???";
+  version = "3.24.7.1";
   src = fetchSteam {
     inherit name;
     appId = "1110390";
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
       $out
 
     # You may need to fix permissions on the main executable.
-    chmod +x $out/some_server_executable
+    chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
   '';
