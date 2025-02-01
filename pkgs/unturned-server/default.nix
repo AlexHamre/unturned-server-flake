@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     # debug = true;
     # Only download specific files
     # fileList = ["filename" "regex:(or|a|regex)"];
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-YZbb7VX6z%2B7j/81KbJyChLfsznMzBoJI/iOF26mLeWc%3D";
   };
 
   # Skip phases that don't apply to prebuilt binaries.
