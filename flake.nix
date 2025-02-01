@@ -18,11 +18,11 @@
   }: {
     nixosModules = rec {
       unturned = import ./nixos-modules/unturned.nix {inherit self steam-fetcher;};
-      default = junkyard;
+      default = unturned;
     };
     overlays.default = final: prev: {
-      junkyard-server-unwrapped = final.callPackage ./pkgs/unturned-server {};
-      junkyard-server = final.callPackage ./pkgs/unturned-server/fhsenv.nix {};
+      unturned-server-unwrapped = final.callPackage ./pkgs/unturned-server {};
+      unturned-server = final.callPackage ./pkgs/unturned-server/fhsenv.nix {};
     };
   };
 }
