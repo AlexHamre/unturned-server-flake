@@ -49,7 +49,7 @@ in {
       serviceConfig = {
           Type = "exec";
           User = "unturned";
-          ExecStart = "${pkgs.unturned-server}/ServerHelper.sh +LanServer/MyServer";
+          ExecStart = "${pkgs.unturned-server}/bin/unturned-server";
       };
     };
 
