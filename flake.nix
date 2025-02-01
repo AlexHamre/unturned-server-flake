@@ -23,7 +23,7 @@
     overlays.default = final: prev: {
       unturned-server-unwrapped = final.callPackage ./pkgs/unturned-server {};
       unturned-server = final.callPackage ./pkgs/unturned-server/fhsenv.nix {};
-      steam-run = prev.steamPackages.steam-run;
+      # steam-run = nixpkgs.steam-run;
     };
   };
 }

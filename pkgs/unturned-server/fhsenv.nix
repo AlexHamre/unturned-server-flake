@@ -4,13 +4,13 @@
   writeScript,
   unturned-server-unwrapped,
   steamworks-sdk-redist,
-  pkgs,  # Ensure pkgs is available
+  pkgs,  
 }:
 buildFHSUserEnv {
   name = "unturned-server";
 
   targetPkgs = pkgs: with pkgs; [
-    steam-run-native  # Corrected from steamPackages.steam-run
+    steam-run 
     unturned-server-unwrapped
     steamworks-sdk-redist
   ];
