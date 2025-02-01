@@ -10,18 +10,13 @@
     };
   };
 
-      configuration = {
-        environment.systemPackages = with pkgs; [
-          steam-run
-        ];
-    };
-
   outputs = {
     self,
     nixpkgs,
     flake-utils,
     steam-fetcher,
   }: {
+        pkgs = nixpkgs.legacyPackages.${system};
     nixosModules = rec {
       unturned = import ./nixos-modules/unturned.nix {inherit self steam-fetcher;};
       default = unturned;
@@ -31,4 +26,10 @@
       unturned-server = final.callPackage ./pkgs/unturned-server/fhsenv.nix {};
     };
   };
+
+        configuration = {
+        environment.systemPackages = with pkgs; [
+          steam-run
+        ];
+    };
 }
