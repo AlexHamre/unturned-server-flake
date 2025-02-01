@@ -31,6 +31,8 @@ stdenv.mkDerivation rec {
     mkdir -p $out
     cp -r \
       # list of files at the top level to copy
+      *.so \
+      *.debug \
       Unturned_Headless.x86_64 \
       Unturned_Headless_Data \
       $out
