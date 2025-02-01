@@ -48,7 +48,7 @@ in {
       serviceConfig = {
           Type = "exec";
           User = "unturned";
-          ExecStart = "${pkgs.unturned-server}/Unturned_Headless.x86_64";
+          ExecStart = "${pkgs.unturned-server}/ServerHelper.sh +LanServer/MyServer";
       };
     };
 
