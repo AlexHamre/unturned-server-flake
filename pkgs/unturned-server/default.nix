@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
       $out
 
     # You may need to fix permissions on the main executable.
-    chmod +x $out/Unturned_Headless.x86_64
+    chmod +x $out/ServerHelper.sh
 
     runHook postInstall
   '';
