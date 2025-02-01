@@ -31,10 +31,11 @@ stdenv.mkDerivation rec {
     mkdir -p $out
     cp -r \
       # list of files at the top level to copy
+      Unturned_Headless.x86_64 \
       $out
 
     # You may need to fix permissions on the main executable.
-    chmod +x $out/ServerHelper.sh
+    chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
   '';
