@@ -11,7 +11,7 @@
   };
 
       configuration = {
-        environment.systemPackages = with nixpkgs; [
+        environment.systemPackages = with pkgs; [
           steam-run
         ];
     };
