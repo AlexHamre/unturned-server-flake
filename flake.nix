@@ -16,7 +16,6 @@
     flake-utils,
     steam-fetcher,
   }: {
-        pkgs = nixpkgs.legacyPackages.${system};
     nixosModules = rec {
       unturned = import ./nixos-modules/unturned.nix {inherit self steam-fetcher;};
       default = unturned;
@@ -24,12 +23,7 @@
     overlays.default = final: prev: {
       unturned-server-unwrapped = final.callPackage ./pkgs/unturned-server {};
       unturned-server = final.callPackage ./pkgs/unturned-server/fhsenv.nix {};
+      steam-run = prev.steamPackages.steam-run;
     };
   };
-
-        configuration = {
-        environment.systemPackages = with pkgs; [
-          steam-run
-        ];
-    };
 }
