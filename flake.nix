@@ -10,6 +10,12 @@
     };
   };
 
+      configuration = {
+        environment.systemPackages = with nixpkgs; [
+          steam-run
+        ];
+    };
+
   outputs = {
     self,
     nixpkgs,
