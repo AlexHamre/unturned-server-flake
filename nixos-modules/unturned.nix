@@ -8,7 +8,6 @@
   ...
 }: let
   cfg = config.services.unturned;
-  stateDir = "/var/lib/unturned";
 in {
   config.nixpkgs.overlays = [self.overlays.default steam-fetcher.overlays.default];
 
@@ -35,7 +34,7 @@ in {
       users.unturned = {
         isSystemUser = true;
         group = "unturned";
-        home = stateDir;
+        home = "var/lib/unturned";
       };
       groups.unturned = {};
     };
