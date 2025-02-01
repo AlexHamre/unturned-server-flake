@@ -15,7 +15,7 @@ buildFHSUserEnv {
     steamworks-sdk-redist
   ];
 
-  runScript = ''${pkgs.steam-run-native}/bin/steam-run ./Unturned_Headless.x86_64 -batchmode -nographics +LanServer/MyServer'';
+  runScript = ''steam-run ./Unturned_Headless.x86_64 -batchmode -nographics +LanServer/MyServer'';
 
   inherit (unturned-server-unwrapped) meta;
 }
