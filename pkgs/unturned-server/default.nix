@@ -19,32 +19,19 @@ stdenv.mkDerivation rec {
   dontConfigure = true;
   dontFixup = true;
 
-installPhase = ''
-  runHook preInstall
+  installPhase = ''
+    runHook preInstall
 
-  mkdir -p $out
+    mkdir -p $out
+    cp -r \
+      * \
+      $out
 
-  # Copy the necessary subdirectories if they exist
-  for dir in BattlEye Bundles ExampleServer.sh install.vdf ServerHelper.sh steamclient.so UnityPlayer.so Unturned_Headless.x86_64; do
-    if [ -d "$dir" ]; then
-      cp -r "$dir" $out
-    elif [ -f "$dir" ]; then
-      cp "$dir" $out
-    fi
-  done
+    # You may need to fix permissions on the main executable.
+    chmod +x $out/Unturned_Headless.x86_64
 
-  # Set permissions on the main executable
-  chmod +x $out/Unturned_Headless.x86_64
-  chmod +x $out/ExampleServer.sh
-  chmod +x $out/ServerHelper.sh
-
-  # Ensure appropriate permissions on all directories and files
-  chmod -R 755 $out
-
-  runHook postInstall
-'';
-
-
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "Unturned dedicated server";
