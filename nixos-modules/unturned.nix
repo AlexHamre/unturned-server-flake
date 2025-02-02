@@ -17,7 +17,7 @@ in {
 
     port = lib.mkOption {
       type = lib.types.port;
-      default = 9001;
+      default = 27015;
       description = lib.mdDoc "The port on which to listen for incoming connections.";
     };
 
@@ -58,6 +58,7 @@ in {
         cfg.port
         (cfg.port + 1) # Steam server browser
       ];
+      
     };
   };
 }
