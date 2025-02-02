@@ -1,0 +1,48 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1738277201,
+        "narHash": "sha256-6L+WXKCw5mqnUIExvqkD99pJQ41xgyCk6z/H9snClwk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "666e1b3f09c267afd66addebe80fb05a5ef2b554",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "steam-fetcher": "steam-fetcher"
+      }
+    },
+    "steam-fetcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738493865,
+        "narHash": "sha256-4VH+5ZQVHPDSYrcJmSgbhK1HAPa8uV+h8ZKfhWRtmnM=",
+        "owner": "AlexHamre",
+        "repo": "steam-fetcher",
+        "rev": "d6e59f51e4fcd15a496c19615756b9fd03a5eba2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AlexHamre",
+        "repo": "steam-fetcher",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
