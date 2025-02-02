@@ -11,7 +11,7 @@ buildFHSUserEnv {
 
   runScript = writeScript "unturned-server-wrapper" ''
     export LD_LIBRARY_PATH=${steamworks-sdk-redist}/lib:$LD_LIBRARY_PATH
-    export SteamAppId=892970
+    export SteamAppId=304930
     export TERM=xterm
     exec ${unturned-server-unwrapped}/Unturned_Headless.x86_64 -batchmode -nographics +LanServer/MyServer "$@"
   '';
