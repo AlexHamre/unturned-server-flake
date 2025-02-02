@@ -22,48 +22,28 @@ stdenv.mkDerivation rec {
 installPhase = ''
   runHook preInstall
 
-  # Create the main directory
   mkdir -p $out
 
-  # Copy the necessary subdirectories
-  cp -r \
-    BattlEye \
-    Bundles \
-    Cloud \
-    Content \
-    CuratedMapIcons \
-    Examples \
-    Extras \
-    linux64 \
-    LoadingScreens \
-    Localization \
-    Maps \
-    Modules \
-    Sandbox \
-    Servers \
-    steamapps \
-    $out
-
-  # Copy executable files
-  cp -r \
-    ExampleServer.sh \
-    install.vdf \
-    ServerHelper.sh \
-    steamclient.so \
-    UnityPlayer.so \
-    Unturned_Headless.x86_64 \
-    $out
+  # Copy the necessary subdirectories if they exist
+  for dir in BattlEye Bundles ExampleServer.sh install.vdf ServerHelper.sh steamclient.so UnityPlayer.so Unturned_Headless.x86_64; do
+    if [ -d "$dir" ]; then
+      cp -r "$dir" $out
+    elif [ -f "$dir" ]; then
+      cp "$dir" $out
+    fi
+  done
 
   # Set permissions on the main executable
   chmod +x $out/Unturned_Headless.x86_64
   chmod +x $out/ExampleServer.sh
   chmod +x $out/ServerHelper.sh
 
-  # Ensure the appropriate directory permissions
+  # Ensure appropriate permissions on all directories and files
   chmod -R 755 $out
 
   runHook postInstall
 '';
+
 
 
   meta = with lib; {
