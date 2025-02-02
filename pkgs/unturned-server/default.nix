@@ -11,12 +11,6 @@ stdenv.mkDerivation rec {
     appId = "1110390";
     depotId = "1110392";
     manifestId = "3114215424494400556";
-    # Fetch a different branch. <https://partner.steamgames.com/doc/store/application/branches>
-    # branch = "beta_name";
-    # Enable debug logging from DepotDownloader.
-    # debug = true;
-    # Only download specific files
-    # fileList = ["filename" "regex:(or|a|regex)"];
     hash = "sha256-mzQm21J1p318Bq7Mhfp5VlqxaEFejM1SA3HOwlYUfSA=";
   };
 
@@ -46,10 +40,7 @@ stdenv.mkDerivation rec {
     description = "Unturned dedicated server";
     homepage = "https://steamdb.info/app/1110390/";
     changelog = "https://store.steampowered.com/news/app/1110390?updates=true";
-    sourceProvenance = with sourceTypes; [
-      binaryNativeCode # Steam games are always going to contain some native binary component.
-      binaryBytecode # e.g. Unity games using C#
-    ];
+    sourceProvenance = with sourceTypes; [binaryBytecode binaryNativeCode];
     license = licenses.unfree;
     platforms = ["x86_64-linux"];
   };

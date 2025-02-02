@@ -1,20 +1,26 @@
 {
-  lib,
   buildFHSUserEnv,
   writeScript,
   unturned-server-unwrapped,
   steamworks-sdk-redist,
-  steam-run,
+  zlib,
+  pulseaudio,
 }:
 buildFHSUserEnv {
   name = "unturned-server";
 
-  targetPkgs = pkgs: with pkgs; [
+  runScript = writeScript "unturned-server-wrapper" ''
+    export LD_LIBRARY_PATH=${steamworks-sdk-redist}/lib:$LD_LIBRARY_PATH
+    export SteamAppId=892970
+    exec ${unturned-server-unwrapped}/Unturned_Headless.x86_64 -batchmode -nographics "$@"
+  '';
+
+  targetPkgs = pkgs: [
     unturned-server-unwrapped
     steamworks-sdk-redist
+    zlib
+    pulseaudio
   ];
-
-  runScript = ''steam-run ./Unturned_Headless.x86_64 -batchmode -nographics +LanServer/MyServer'';
 
   inherit (unturned-server-unwrapped) meta;
 }
