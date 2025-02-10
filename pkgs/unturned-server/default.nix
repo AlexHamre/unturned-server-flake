@@ -31,30 +31,19 @@ in symlinkJoin {
   dontConfigure = true;
   dontFixup = true;
 
-installPhase = ''
-  runHook preInstall
+  installPhase = ''
+    runHook preInstall
 
-  mkdir -p $out
-  cp -r * $out
+    mkdir -p $out
+    cp -r \
+      * \
+      $out
 
-  # Debugging: List file permissions
-  echo "Listing file permissions for debugging:"
-  ls -l $out/Unturned_Headless.x86_64
-  ls -l $out/bin/unturned-server-wrapper
+    # You may need to fix permissions on the main executable.
+    chmod +x $out/Unturned_Headless.x86_64
 
-  # Ensure the file has execute permissions
-  chmod +x $out/Unturned_Headless.x86_64 || true
-  chmod +x $out/bin/unturned-server-wrapper || true
-
-  # List again after chmod
-  echo "Listing file permissions after chmod:"
-  ls -l $out/Unturned_Headless.x86_64
-  ls -l $out/bin/unturned-server-wrapper
-
-  runHook postInstall
-'';
-
-
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "Unturned dedicated server";
