@@ -31,17 +31,17 @@ in symlinkJoin {
   dontConfigure = true;
   dontFixup = true;
 
-  installPhase = ''
-    runHook preInstall
+installPhase = ''
+  runHook preInstall
 
-    mkdir -p $out
-    cp -r * $out
+  mkdir -p $out
+  cp -r * $out
 
-    # Workaround for permissions issue
-    chmod +x $out/Unturned_Headless.x86_64 || true
+  # Ensure the file has execute permissions
+  chmod -R +x $out/Unturned_Headless.x86_64 || true
 
-    runHook postInstall
-  '';
+  runHook postInstall
+'';
 
   meta = with lib; {
     description = "Unturned dedicated server";
