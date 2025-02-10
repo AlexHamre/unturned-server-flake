@@ -26,7 +26,7 @@ let
     appId = "1110390";
     depotId = "1110394"; # New depot ID
     manifestId = "3609612843127309127"; # New manifest ID
-    hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXX"; # Add the correct hash for this depot
+    hash = "sha256-mzQm21J1p318Bq7Mhfp5VlqxaEFejM1SA3HOwlYUfSA"; # Add the correct hash for this depot
   };
 
   additionalDepot2 = fetchSteam {
@@ -34,7 +34,7 @@ let
     appId = "90"; # New app ID
     depotId = "1006"; # New depot ID
     manifestId = "7138471031118904166"; # New manifest ID
-    hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXX"; # Add the correct hash for this depot
+    hash = "sha256-mzQm21J1p318Bq7Mhfp5VlqxaEFejM1SA3HOwlYUfSA"; # Add the correct hash for this depot
   };
 
 in stdenv.mkDerivation rec {
