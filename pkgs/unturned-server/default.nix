@@ -32,11 +32,24 @@ in stdenv.mkDerivation rec {
   dontConfigure = true;
   dontFixup = true;
 
+  # Explicitly declare the source directories to avoid unpacking issues
+  src = baseDepot; # Point src to the baseDepot (this is needed to avoid unpack issues)
+  srcs = [ extraDepot ]; # Include the extraDepot as an additional source
+  
+  # Define the installPhase
   installPhase = ''
     runHook preInstall
+
+    # Create the target directory
     mkdir -p $out
-    cp -r $baseDepot/* $out/
-    cp -r $extraDepot/* $out/
+
+    # Copy the contents of baseDepot and extraDepot directly
+    cp -r $src/* $out/
+    for dep in $srcs; do
+      cp -r $dep/* $out/
+    done
+
+    # Ensure the main executable is executable
     chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
