@@ -7,7 +7,7 @@
 
 let
   baseDepot = fetchSteam {
-    name = "unturned-server-base";
+    name = "unturned-server";
     appId = "1110390";
     depotId = "1110392";
     manifestId = "3114215424494400556";
@@ -15,22 +15,16 @@ let
   };
 
   extraDepot = fetchSteam {
-    name = "unturned-server-extra";
+    name = "unturned-server";
     appId = "1110390";
     depotId = "1110393"; # Replace with the correct depot ID
     manifestId = "3381894269381868866"; # Replace with the correct manifest ID
     hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM="; # Replace with the correct hash
   };
 
-  mergedDepots = symlinkJoin {
-    name = "unturned-server-merged";
-    paths = [ baseDepot extraDepot ];
-  };
-
-in stdenv.mkDerivation {
+in symlinkJoin {
   name = "unturned-server";
-  version = "3.24.7.1";
-  src = mergedDepots;
+  paths = [ baseDepot extraDepot ];
 
   # Skip phases that don't apply to prebuilt binaries.
   dontBuild = true;
@@ -38,20 +32,16 @@ in stdenv.mkDerivation {
   dontFixup = true;
 
   installPhase = ''
-  runHook preInstall
+    runHook preInstall
 
-  # Create writable directory
-  mkdir -p $out
+    mkdir -p $out
+    cp -r * $out
 
-  # Ensure files are executable before copying
-  chmod +x $src/Unturned_Headless.x86_64 || true
+    # Workaround for permissions issue
+    chmod +x $out/Unturned_Headless.x86_64 || true
 
-  # Copy files
-  cp -r $src/* $out
-
-  runHook postInstall
-'';
-
+    runHook postInstall
+  '';
 
   meta = with lib; {
     description = "Unturned dedicated server";
