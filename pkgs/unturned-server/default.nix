@@ -26,6 +26,26 @@ in symlinkJoin {
   name = "unturned-server";
   paths = [ baseDepot extraDepot ];
 
+
+    # Skip phases that don't apply to prebuilt binaries.
+  dontBuild = true;
+  dontConfigure = true;
+  dontFixup = true;
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out
+    cp -r \
+      * \
+      $out
+
+    # You may need to fix permissions on the main executable.
+    chmod +x $out/Unturned_Headless.x86_64
+
+    runHook postInstall
+  '';
+
   meta = with lib; {
     description = "Unturned dedicated server";
     homepage = "https://steamdb.info/app/1110390/";
