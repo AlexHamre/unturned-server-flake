@@ -41,9 +41,14 @@ in stdenv.mkDerivation {
     runHook preInstall
 
     mkdir -p $out
-    cp -r $src/* $out
+    cp -r $src/* $TMPDIR/unturned-server
 
-    # You may need to fix permissions on the main executable.
+    # Ensure files are writable before modifying
+    chmod -R u+w $TMPDIR/unturned-server
+
+    cp -r $TMPDIR/unturned-server/* $out
+
+    # Fix permissions on the main executable
     chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
