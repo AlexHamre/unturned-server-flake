@@ -34,15 +34,9 @@ in stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-
-    # Create the target directory
     mkdir -p $out
-
-    # Copy the contents of baseDepot and extraDepot
     cp -r $baseDepot/* $out/
     cp -r $extraDepot/* $out/
-
-    # Ensure the main executable is executable
     chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
