@@ -26,7 +26,7 @@ let
     appId = "1110390";
     depotId = "1110394"; # New depot ID
     manifestId = "3609612843127309127"; # New manifest ID
-    hash = "sha256-mzQm21J1p318Bq7Mhfp5VlqxaEFejM1SA3HOwlYUfSA"; # Add the correct hash for this depot
+    hash = "sha256-<replace-with-correct-hash>"; # Add the correct hash for this depot
   };
 
   additionalDepot2 = fetchSteam {
@@ -34,7 +34,7 @@ let
     appId = "90"; # New app ID
     depotId = "1006"; # New depot ID
     manifestId = "7138471031118904166"; # New manifest ID
-    hash = "sha256-mzQm21J1p318Bq7Mhfp5VlqxaEFejM1SA3HOwlYUfSA"; # Add the correct hash for this depot
+    hash = "sha256-<replace-with-correct-hash>"; # Add the correct hash for this depot
   };
 
 in stdenv.mkDerivation rec {
@@ -54,13 +54,18 @@ in stdenv.mkDerivation rec {
 
     mkdir -p $out
 
-    # Copy files with --no-preserve=mode to avoid permission issues
+    # Create subdirectories for each depot to avoid collisions
+    mkdir -p $out/baseDepot $out/extraDepot $out/additionalDepot1 $out/additionalDepot2
+
+    # Copy files from each depot to its corresponding subdirectory
     for dep in $src $srcs; do
-      cp -r --no-preserve=mode $dep/* $out/
+      depotName=$(basename $dep)
+      mkdir -p $out/$depotName
+      cp -r --no-preserve=mode $dep/* $out/$depotName/
     done
 
     # Ensure the main executable is executable
-    chmod +x $out/Unturned_Headless.x86_64
+    chmod +x $out/baseDepot/Unturned_Headless.x86_64
 
     runHook postInstall
   '';
