@@ -24,26 +24,30 @@ let
 in stdenv.mkDerivation rec {
   name = "unturned-server";
   
-  # Declare the baseDepot and extraDepot as inputs
   buildInputs = [ baseDepot extraDepot ];
 
-  # Skip unnecessary phases
   dontBuild = true;
   dontConfigure = true;
   dontFixup = true;
 
-  # Explicitly declare the source directories to avoid unpacking issues
-  src = baseDepot; # Point src to the baseDepot (this is needed to avoid unpack issues)
-  srcs = [ extraDepot ]; # Include the extraDepot as an additional source
-  
-  # Define the installPhase
+  src = baseDepot;
+  srcs = [ extraDepot ];
+
   installPhase = ''
     runHook preInstall
 
-    # Create the target directory
     mkdir -p $out
 
-    # Copy the contents of baseDepot and extraDepot directly
+    # Adjust permissions on the directories before copying files
+    find $src -type d -exec chmod 755 {} \;
+    find $src -type f -exec chmod 644 {} \;
+
+    for dep in $srcs; do
+      find $dep -type d -exec chmod 755 {} \;
+      find $dep -type f -exec chmod 644 {} \;
+    done
+
+    # Now copy files after setting proper permissions
     cp -r $src/* $out/
     for dep in $srcs; do
       cp -r $dep/* $out/
