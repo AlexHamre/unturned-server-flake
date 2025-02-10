@@ -17,6 +17,22 @@ let
     hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM=";
   };
 
+  additionalDepot1 = fetchSteam {
+    name = "unturned-server-other";
+    appId = "1110390";
+    depotId = "1110394";
+    manifestId = "3609612843127309127";
+    hash = "sha256-RqGZfRf66rVUmChQF4ERGDd2vpIoWhkvEbL+r7+5JkQ=";
+  };
+
+  additionalDepot2 = fetchSteam {
+    name = "steam-redist";
+    appId = "90"; 
+    depotId = "1006";
+    manifestId = "7138471031118904166"; 
+    hash = "sha256-OtPI1kAx6+9G09IEr2kYchyvxlPl3rzx/ai/xEVG4oM=";
+  };
+
 in stdenv.mkDerivation rec {
   name = "unturned-server";
 
@@ -29,6 +45,8 @@ in stdenv.mkDerivation rec {
   # Use src for baseDepot and srcs for extraDepot
   src = baseDepot;
   srcs = [ extraDepot ];
+  srca = [ additionalDepot1 ];
+  srcb = [ additionalDepot2 ];
 
   installPhase = ''
     runHook preInstall
@@ -36,7 +54,7 @@ in stdenv.mkDerivation rec {
     mkdir -p $out
 
     # Copy files from $src (baseDepot) and $srcs (extraDepot)
-    for dep in $src $srcs; do
+    for dep in $src $srcs $srca $srcb; do
       cp -r --no-preserve=mode $dep/* $out/
     done
 
