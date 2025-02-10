@@ -38,19 +38,9 @@ in stdenv.mkDerivation rec {
 
     mkdir -p $out
 
-    # Adjust permissions on the directories before copying files
-    find $src -type d -exec chmod 755 {} \;
-    find $src -type f -exec chmod 644 {} \;
-
-    for dep in $srcs; do
-      find $dep -type d -exec chmod 755 {} \;
-      find $dep -type f -exec chmod 644 {} \;
-    done
-
-    # Now copy files after setting proper permissions
-    cp -r $src/* $out/
-    for dep in $srcs; do
-      cp -r $dep/* $out/
+    # Copy files with --no-preserve=mode to avoid permission issues
+    for dep in $src $srcs; do
+      cp -r --no-preserve=mode $dep/* $out/
     done
 
     # Ensure the main executable is executable
