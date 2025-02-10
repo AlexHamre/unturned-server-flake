@@ -37,11 +37,13 @@ installPhase = ''
   mkdir -p $out
   cp -r * $out
 
-  # Ensure the file has execute permissions
+  # Ensure file permissions and ownership are correct
   chmod -R +x $out/Unturned_Headless.x86_64 || true
+  chown -R nixbld:nixbld $out || true
 
   runHook postInstall
 '';
+
 
   meta = with lib; {
     description = "Unturned dedicated server";
