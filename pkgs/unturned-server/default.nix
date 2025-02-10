@@ -2,7 +2,6 @@
   lib,
   stdenv,
   fetchSteam,
-  symlinkJoin,
 }:
 
 let
@@ -22,11 +21,13 @@ let
     hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM="; # Replace with the correct hash
   };
 
-in symlinkJoin {
+in stdenv.mkDerivation rec {
   name = "unturned-server";
-  paths = [ baseDepot extraDepot ];
+  
+  # Declare the baseDepot and extraDepot as inputs
+  buildInputs = [ baseDepot extraDepot ];
 
-  # Skip phases that don't apply to prebuilt binaries.
+  # Skip unnecessary phases
   dontBuild = true;
   dontConfigure = true;
   dontFixup = true;
@@ -34,12 +35,14 @@ in symlinkJoin {
   installPhase = ''
     runHook preInstall
 
+    # Create the target directory
     mkdir -p $out
-    cp -r \
-      * \
-      $out
 
-    # You may need to fix permissions on the main executable.
+    # Copy the contents of baseDepot and extraDepot
+    cp -r $baseDepot/* $out/
+    cp -r $extraDepot/* $out/
+
+    # Ensure the main executable is executable
     chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
