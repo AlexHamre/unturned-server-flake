@@ -16,22 +16,38 @@ let
   extraDepot = fetchSteam {
     name = "unturned-server";
     appId = "1110390";
-    depotId = "1110393"; # Replace with the correct depot ID
-    manifestId = "3381894269381868866"; # Replace with the correct manifest ID
-    hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM="; # Replace with the correct hash
+    depotId = "1110393";
+    manifestId = "3381894269381868866";
+    hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM=";
+  };
+
+  additionalDepot1 = fetchSteam {
+    name = "unturned-server";
+    appId = "1110390";
+    depotId = "1110394"; # New depot ID
+    manifestId = "3609612843127309127"; # New manifest ID
+    hash = "sha256-<replace-with-correct-hash>"; # Add the correct hash for this depot
+  };
+
+  additionalDepot2 = fetchSteam {
+    name = "unturned-server";
+    appId = "90"; # New app ID
+    depotId = "1006"; # New depot ID
+    manifestId = "7138471031118904166"; # New manifest ID
+    hash = "sha256-<replace-with-correct-hash>"; # Add the correct hash for this depot
   };
 
 in stdenv.mkDerivation rec {
   name = "unturned-server";
   
-  buildInputs = [ baseDepot extraDepot ];
+  buildInputs = [ baseDepot extraDepot additionalDepot1 additionalDepot2 ];
 
   dontBuild = true;
   dontConfigure = true;
   dontFixup = true;
 
   src = baseDepot;
-  srcs = [ extraDepot ];
+  srcs = [ extraDepot additionalDepot1 additionalDepot2 ];
 
   installPhase = ''
     runHook preInstall
