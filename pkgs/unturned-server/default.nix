@@ -40,21 +40,12 @@ in stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    # Create a writable directory
-    mkdir -p $TMPDIR/unturned-server
-
-    # Copy all files to the writable directory
-    cp -r $src/* $TMPDIR/unturned-server
-
-    # Ensure files are writable before modifying
-    chmod -R u+w $TMPDIR/unturned-server
-
-    # Copy the modified files to $out
+    # Copy to a writable directory before modifying
     mkdir -p $out
-    cp -r $TMPDIR/unturned-server/* $out
+    cp -r $src/* $out
 
     # Fix permissions on the main executable
-    chmod +x $out/Unturned_Headless.x86_64
+    chmod +x $out/Unturned_Headless.x86_64 || true
 
     runHook postInstall
   '';
