@@ -40,12 +40,17 @@ in stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out
+    # Create a writable directory
+    mkdir -p $TMPDIR/unturned-server
+
+    # Copy all files to the writable directory
     cp -r $src/* $TMPDIR/unturned-server
 
     # Ensure files are writable before modifying
     chmod -R u+w $TMPDIR/unturned-server
 
+    # Copy the modified files to $out
+    mkdir -p $out
     cp -r $TMPDIR/unturned-server/* $out
 
     # Fix permissions on the main executable
