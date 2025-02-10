@@ -37,12 +37,23 @@ installPhase = ''
   mkdir -p $out
   cp -r * $out
 
-  # Ensure file permissions and ownership are correct
-  chmod -R +x $out/Unturned_Headless.x86_64 || true
-  chown -R nixbld:nixbld $out || true
+  # Debugging: List file permissions
+  echo "Listing file permissions for debugging:"
+  ls -l $out/Unturned_Headless.x86_64
+  ls -l $out/bin/unturned-server-wrapper
+
+  # Ensure the file has execute permissions
+  chmod +x $out/Unturned_Headless.x86_64 || true
+  chmod +x $out/bin/unturned-server-wrapper || true
+
+  # List again after chmod
+  echo "Listing file permissions after chmod:"
+  ls -l $out/Unturned_Headless.x86_64
+  ls -l $out/bin/unturned-server-wrapper
 
   runHook postInstall
 '';
+
 
 
   meta = with lib; {
