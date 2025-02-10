@@ -38,17 +38,20 @@ in stdenv.mkDerivation {
   dontFixup = true;
 
   installPhase = ''
-    runHook preInstall
+  runHook preInstall
 
-    # Copy to a writable directory before modifying
-    mkdir -p $out
-    cp -r $src/* $out
+  # Create writable directory
+  mkdir -p $out
 
-    # Fix permissions on the main executable
-    chmod +x $out/Unturned_Headless.x86_64 || true
+  # Ensure files are executable before copying
+  chmod +x $src/Unturned_Headless.x86_64 || true
 
-    runHook postInstall
-  '';
+  # Copy files
+  cp -r $src/* $out
+
+  runHook postInstall
+'';
+
 
   meta = with lib; {
     description = "Unturned dedicated server";
