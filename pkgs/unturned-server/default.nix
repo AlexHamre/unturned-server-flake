@@ -7,7 +7,7 @@
 
 let
   baseDepot = fetchSteam {
-    name = "unturned-server";
+    name = "unturned-server-base";
     appId = "1110390";
     depotId = "1110392";
     manifestId = "3114215424494400556";
@@ -15,19 +15,24 @@ let
   };
 
   extraDepot = fetchSteam {
-    name = "unturned-server";
+    name = "unturned-server-extra";
     appId = "1110390";
     depotId = "1110393"; # Replace with the correct depot ID
     manifestId = "3381894269381868866"; # Replace with the correct manifest ID
     hash = "sha256-HJpRCQDr6ss+Zi6PdXaic6bZzmjfHAgN652CKbBLMfM="; # Replace with the correct hash
   };
 
-in symlinkJoin {
+  mergedDepots = symlinkJoin {
+    name = "unturned-server-merged";
+    paths = [ baseDepot extraDepot ];
+  };
+
+in stdenv.mkDerivation {
   name = "unturned-server";
-  paths = [ baseDepot extraDepot ];
+  version = "3.24.7.1";
+  src = mergedDepots;
 
-
-    # Skip phases that don't apply to prebuilt binaries.
+  # Skip phases that don't apply to prebuilt binaries.
   dontBuild = true;
   dontConfigure = true;
   dontFixup = true;
@@ -36,9 +41,7 @@ in symlinkJoin {
     runHook preInstall
 
     mkdir -p $out
-    cp -r \
-      * \
-      $out
+    cp -r $src/* $out
 
     # You may need to fix permissions on the main executable.
     chmod +x $out/Unturned_Headless.x86_64
