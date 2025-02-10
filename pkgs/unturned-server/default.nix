@@ -1,12 +1,8 @@
-{
-  lib,
-  stdenv,
-  fetchSteam,
-}:
+{ lib, stdenv, fetchSteam }:
 
 let
   baseDepot = fetchSteam {
-    name = "unturned-server";
+    name = "unturned-server-base";
     appId = "1110390";
     depotId = "1110392";
     manifestId = "3114215424494400556";
@@ -14,7 +10,7 @@ let
   };
 
   extraDepot = fetchSteam {
-    name = "unturned-server";
+    name = "unturned-server-extra";
     appId = "1110390";
     depotId = "1110393";
     manifestId = "3381894269381868866";
@@ -22,50 +18,63 @@ let
   };
 
   additionalDepot1 = fetchSteam {
-    name = "unturned-server";
+    name = "unturned-server-other";
     appId = "1110390";
-    depotId = "1110394"; # New depot ID
-    manifestId = "3609612843127309127"; # New manifest ID
+    depotId = "1110394";
+    manifestId = "3609612843127309127";
     hash = "sha256-RqGZfRf66rVUmChQF4ERGDd2vpIoWhkvEbL+r7+5JkQ=";
   };
 
   additionalDepot2 = fetchSteam {
-    name = "unturned-server";
-    appId = "90"; # New app ID
-    depotId = "1006"; # New depot ID
-    manifestId = "7138471031118904166"; # New manifest ID
+    name = "steam-redist";
+    appId = "90";
+    depotId = "1006";
+    manifestId = "7138471031118904166";
     hash = "sha256-OtPI1kAx6+9G09IEr2kYchyvxlPl3rzx/ai/xEVG4oM=";
   };
 
 in stdenv.mkDerivation rec {
   name = "unturned-server";
-  
+
   buildInputs = [ baseDepot extraDepot additionalDepot1 additionalDepot2 ];
 
   dontBuild = true;
   dontConfigure = true;
   dontFixup = true;
 
+  # Use src for baseDepot and srcs for extraDepot, additionalDepot1, and additionalDepot2
   src = baseDepot;
   srcs = [ extraDepot additionalDepot1 additionalDepot2 ];
+
+  # Custom unpack phase to handle multiple directories and permissions
+  unpackPhase = ''
+    runHook preUnpack
+
+    # Create a temporary directory for the unpacked files
+    mkdir -p $TMPDIR/unpacked
+
+    # Unpack all depots with adjusted permissions
+    for dep in $src $srcs; do
+      cp -r $dep/* $TMPDIR/unpacked/
+    done
+
+    # Fix permissions by setting umask to allow all permissions for directories and files
+    umask 0022
+    chmod -R u+rwX,go+rX $TMPDIR/unpacked
+
+    runHook postUnpack
+  '';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out
 
-    # Create subdirectories for each depot to avoid collisions
-    mkdir -p $out/baseDepot $out/extraDepot $out/additionalDepot1 $out/additionalDepot2
-
-    # Copy files from each depot to its corresponding subdirectory
-    for dep in $src $srcs; do
-      depotName=$(basename $dep)
-      mkdir -p $out/$depotName
-      cp -r --no-preserve=mode $dep/* $out/$depotName/
-    done
+    # Copy files from the unpacked directory to $out
+    cp -r --no-preserve=mode $TMPDIR/unpacked/* $out/
 
     # Ensure the main executable is executable
-    chmod +x $out/baseDepot/Unturned_Headless.x86_64
+    chmod +x $out/Unturned_Headless.x86_64
 
     runHook postInstall
   '';
